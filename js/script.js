@@ -2,10 +2,12 @@ addEventListener('load', function () {
     loadFavourites();
 });
 document.getElementById("searchbtn").addEventListener('click', function () {
-    if (document.getElementById("search").value !== '') {
+    if (document.getElementById("search").value != '' && document.getElementById("search").value != ',' && document.getElementById("search").value != ' ') {
+        document.getElementById("error").textContent = "";
         performSearch();
-    } else
-        document.getElementById("results").innerHTML = "";
+    } else {
+        document.getElementById("error").textContent = "Please enter a valid query";
+    }
 });
 document.getElementById("search").addEventListener('keyup', function () {
     document.getElementById("results").innerHTML = "";
@@ -16,17 +18,29 @@ document.getElementById("results").addEventListener('click', function (e) {
         toFavourite = toFavourite.parentNode;
     if (toFavourite.nodeName.toUpperCase() == 'BUTTON') {
         if (toFavourite.className == "unfavourited") {
-            localStorage.setItem(toFavourite.id, toFavourite.value);
+            localStorage.setItem(toFavourite.name, toFavourite.value);
             toFavourite.className = "favourited";
         } // end-if not favourited
         else {
-            localStorage.removeItem(toFavourite.value);
+            localStorage.removeItem(toFavourite.name);
             toFavourite.className = "unfavourited";
         }
         performSearch();
         loadFavourites();
     } // end-if star was pressed
 });
+document.getElementById("items").addEventListener('click', function (e) {
+    let pressed = e.target;
+    if (pressed.nodeName.toUpperCase() == 'I')
+        pressed = pressed.parentNode;
+    if (pressed.nodeName.toUpperCase() == 'BUTTON') {
+        localStorage.removeItem(pressed.name);
+        // Verifying if a search was performed before clicking the star
+        if (document.getElementById("results").textContent.includes("Search Results"))
+            performSearch();
+        loadFavourites();
+    }
+})
 let performSearch = function () {
     let hasResults = false;
     let result = "<h1>Search Results</h1>"; // Render header to explain what div contains
@@ -39,7 +53,7 @@ let performSearch = function () {
                 let body = document.createElement('div');
                 body.innerHTML = currentObj['body'];
                 result += `<div>
-                        <button class ="favourited" value=${localStorage.key(i)}><i class="fas fa-star"></i></button>
+                        <button class ="favourited" name=${localStorage.key(i)} value="${localStorage.getItem(localStorage.key(i))}"><i class="fas fa-star"></i></button>
                         <p>${currentObj['title']}</p>
                         <div class="inner">${body.textContent}</div>
                     </div>`;
@@ -68,8 +82,9 @@ let performSearch = function () {
                 // Render body as HTML code
                 let body = document.createElement('div');
                 body.innerHTML = i['body'];
+                // Using name instead of id below to prevent duplicate ids
                 result += `<div>
-                    <button class="unfavourited" value=${encodeURIComponent(JSON.stringify(i))} id="favourite${count}"><i class="fas fa-star"></i></button>
+                    <button class="unfavourited" value=${encodeURIComponent(JSON.stringify(i))} name="favourite${count}"><i class="fas fa-star"></i></button>
                     <p>${i['title']}</p>
                     <div class="inner">${body.textContent}</div>
                 </div>`;
@@ -82,6 +97,7 @@ let performSearch = function () {
         }
     })
 }
+// This function verifies if a result returned by the API call already exists in the favourites
 let searchFavourites = function (result) {
     for (let i = 0; i < localStorage.length; i++) {
         if (localStorage.getItem(localStorage.key(i)) == encodeURIComponent(JSON.stringify(result)))
@@ -89,6 +105,7 @@ let searchFavourites = function (result) {
     }
     return false;
 }
+// This loads tha favourites in the favourites div
 let loadFavourites = function () {
     let result = '';
     if ((localStorage.length == 1 && localStorage.count != undefined) || localStorage.length == 0) {
@@ -100,9 +117,8 @@ let loadFavourites = function () {
                 // Render body as HTML code
                 let body = document.createElement('div');
                 body.innerHTML = currentObj['body'];
-                // id used as value to prevent duplicate ids
                 result += `<div>
-                            <button class="favourited" value="${localStorage.key(i)}"><i class="fas fa-star favourited"></i></button>
+                            <button class="favourited" name="${localStorage.key(i)}" value="${localStorage.getItem(localStorage.key(i))}"><i class="fas fa-star favourited"></i></button>
                             <p>${currentObj['title']}</p>
                             <div class="inner">${body.textContent}</div>
                         </div>`;
