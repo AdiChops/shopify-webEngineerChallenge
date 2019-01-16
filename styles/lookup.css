@@ -50,16 +50,24 @@ header h1{
 .unfavourited:hover{
     color:lightgray;
 }
-#results > div{
+#results > div, #items > div{
     display:grid;
-    grid-template-columns: 1fr 5fr 6fr;
+    grid-template-columns: 1fr 5fr;
     grid-gap: 0.5em;
+}
+.inner{
+    grid-column-start: 1;
+    grid-column-end: 6;
 }
 
 @media all and (min-width: 768px){
-    #results > div{
+    #results > div, #items > div{
         display:grid;
         grid-template-columns: 0.3fr 2fr 5fr;
         grid-gap: 0.5em;
+    }
+    .inner{
+        grid-column-start: unset;
+        grid-column-end: unset;
     }
 }
