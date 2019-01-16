@@ -1,0 +1,65 @@
+body{
+    font-family: Calibri, 'Trebuchet MS', sans-serif;
+}
+header h1{
+    text-align:center;
+    color:white;
+    background: linear-gradient(to right, #042846, #00a069);
+    padding:1em;
+}
+#searching{
+    display:grid;
+    grid-template-columns: 11fr 1fr;
+    height:3em;
+    grid-column-gap: 1em;
+}
+#search{
+    font-size:1em;
+}
+#searchbtn{
+    background-color:#1cb982;
+    color:white;
+    font-size:1.5em;
+}
+#searchbtn:hover{
+    color: #1cb982;
+    background-color:white;
+}
+#favourites{
+    background-color:#cefcc3;
+}
+#favourites h1{
+    color: green;
+}
+#results p{
+    font-size: 1.3em;
+}
+.favourited{
+    background-color: transparent;
+    color: green;
+    border:0;
+}
+.favourited:hover{
+    color: lightgreen;
+}
+.unfavourited{
+    color:gray;
+    background-color: transparent;
+    border:0;
+}
+.unfavourited:hover{
+    color:lightgray;
+}
+#results > div{
+    display:grid;
+    grid-template-columns: 1fr 5fr 6fr;
+    grid-gap: 0.5em;
+}
+
+@media all and (min-width: 768px){
+    #results > div{
+        display:grid;
+        grid-template-columns: 0.3fr 2fr 5fr;
+        grid-gap: 0.5em;
+    }
+}
