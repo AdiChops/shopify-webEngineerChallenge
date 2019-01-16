@@ -12,9 +12,9 @@ document.getElementById("search").addEventListener('keyup', function (e) {
 });
 document.getElementById("results").addEventListener('click', function (e) {
     let toFavourite = e.target;
-    if (toFavourite.nodeName.toUpperCase() == 'I')
+    if (toFavourite.nodeName.toLowerCase() == 'i')
         toFavourite = toFavourite.parentNode;
-    if (toFavourite.nodeName.toUpperCase() == 'BUTTON') {
+    if (toFavourite.nodeName.toLowerCase() == 'button') {
         if (toFavourite.className == "unfavourited") {
             localStorage.setItem(toFavourite.name, toFavourite.value);
             toFavourite.className = "favourited";
