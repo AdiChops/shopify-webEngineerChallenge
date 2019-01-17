@@ -23,7 +23,6 @@ document.getElementById("results").addEventListener('click', function (e) {
             localStorage.removeItem(toFavourite.name);
             toFavourite.className = "unfavourited";
         }
-        performSearch();
         loadFavourites();
     } // end-if star was pressed
 });
@@ -35,7 +34,7 @@ document.getElementById("items").addEventListener('click', function (e) {
         localStorage.removeItem(pressed.name);
         // Verifying if a search was performed before clicking the star
         if (document.getElementById("results").textContent.includes("Search Results"))
-            performSearch();
+            document.getElementsByName(pressed.name)[0].className="unfavourited";
         loadFavourites();
     }
 })
