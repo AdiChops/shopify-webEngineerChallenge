@@ -8,7 +8,7 @@ Adding a favourite renders a green star for that specific item and that item get
 When performing a search, the application starts off by:
  - searching favourites and adds them to the top of the list and renders a green star button;
  - performs the API call to search the database and finally;
- - checks if the result already exists in favourites. If it does, then that item is not redisplayed as it is already displayed with the favourites. Otherewise, the item is displayed with the grey star button.
+ - checks if the result already exists in favourites. If it does, then that item is not redisplayed as it is already displayed with the favourites. Otherwise, the item is displayed with the grey star button.
 
 Any edit made to the search field will clear the results.
 
