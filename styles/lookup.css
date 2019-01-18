@@ -37,18 +37,19 @@ header h1{
 #results p{
     font-size: 1.3em;
 }
-.favourited{
+.favourited, .unfavourited{
     background-color: transparent;
-    color: green;
     border:0;
+    outline:none;
+}
+.favourited{
+    color: green;
 }
 .favourited:hover{
     color: lightgreen;
 }
 .unfavourited{
     color:gray;
-    background-color: transparent;
-    border:0;
 }
 .unfavourited:hover{
     color:lightgray;

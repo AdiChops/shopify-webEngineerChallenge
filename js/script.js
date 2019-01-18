@@ -18,12 +18,13 @@ document.getElementById("results").addEventListener('click', function (e) {
         if (toFavourite.className == "unfavourited") {
             localStorage.setItem(toFavourite.name, toFavourite.value);
             toFavourite.className = "favourited";
+            addFavourite(toFavourite.value, toFavourite.name);
         } // end-if not favourited
         else {
             localStorage.removeItem(toFavourite.name);
             toFavourite.className = "unfavourited";
+            unfavourite(document.getElementsByName(toFavourite.name)[1]); // to remove from favourites div
         }
-        loadFavourites();
     } // end-if star was pressed
 });
 document.getElementById("items").addEventListener('click', function (e) {
@@ -31,11 +32,7 @@ document.getElementById("items").addEventListener('click', function (e) {
     if (pressed.nodeName.toUpperCase() == 'I')
         pressed = pressed.parentNode;
     if (pressed.nodeName.toUpperCase() == 'BUTTON') {
-        localStorage.removeItem(pressed.name);
-        // Verifying if a search was performed before clicking the star
-        if (document.getElementById("results").textContent.includes("Search Results"))
-            document.getElementsByName(pressed.name)[0].className="unfavourited";
-        loadFavourites();
+        unfavourite(pressed);
     }
 })
 let performSearch = function () {
@@ -108,25 +105,44 @@ let searchFavourites = function (result) {
     }
     return false;
 }
-// This loads tha favourites in the favourites div
+// This loads the favourites in the favourites div (#items child div)
 let loadFavourites = function () {
-    let result = '';
-    if ((localStorage.length == 1 && localStorage.count != undefined) || localStorage.length == 0) {
-        result = "<p>There are currently no favourited items.";
-    } else {
+     if(!checkEmpty()) {
         for (let i = 0; i < localStorage.length; i++) {
             if (localStorage.key(i) !== 'count') {
-                let currentObj = JSON.parse(decodeURIComponent(localStorage.getItem(localStorage.key(i))));
-                // Render body as HTML code
-                let body = document.createElement('div');
-                body.innerHTML = currentObj['body'];
-                result += `<div>
-                            <button class="favourited" name="${localStorage.key(i)}" value="${localStorage.getItem(localStorage.key(i))}"><i class="fas fa-star favourited"></i></button>
-                            <p>${currentObj['title']}</p>
-                            <div class="inner">${body.textContent}</div>
-                        </div>`;
+                let currentObj = localStorage.getItem(localStorage.key(i));
+                addFavourite(currentObj, localStorage.key(i));
             }
         } //for
     }
-    document.getElementById("items").innerHTML = result;
+}
+let addFavourite = function (obj, faveName) {
+    obj = JSON.parse(decodeURIComponent(obj));
+    if (document.getElementById("items").textContent === "There are currently no favourited items.")
+        document.getElementById("items").textContent = "";
+    // Render body as HTML code
+    let body = document.createElement('div');
+    body.innerHTML = obj['body'];
+    document.getElementById("items").innerHTML += `<div>
+                <button class="favourited" name="${faveName}" value="${localStorage.getItem(faveName)}"><i class="fas fa-star"></i></button>
+                <p>${obj['title']}</p>
+                <div class="inner">${body.textContent}</div>
+            </div>`;
+}
+// This function checks if there is no items favourited
+let checkEmpty = function () {
+    if ((localStorage.length == 1 && localStorage.count != undefined) || localStorage.length == 0) {
+        document.getElementById("items").innerHTML = "<p>There are currently no favourited items.</p>";
+        return true;
+    }
+    return false;
+}
+let unfavourite = function (clicked) {
+    localStorage.removeItem(clicked.name);
+        // Verifying if a search was performed before clicking the star
+        if (document.getElementById("results").textContent.includes("Search Results"))
+            document.getElementsByName(clicked.name)[0].className="unfavourited";
+        let toRemove = clicked.parentNode; //selects the div
+        document.getElementById("items").removeChild(toRemove);
+        checkEmpty();
 }
