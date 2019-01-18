@@ -12,9 +12,9 @@ document.getElementById("search").addEventListener('keyup', function (e) {
 });
 document.getElementById("results").addEventListener('click', function (e) {
     let toFavourite = e.target;
-    if (toFavourite.nodeName.toLowerCase() == 'i')
+    if (toFavourite.nodeName == 'I')
         toFavourite = toFavourite.parentNode;
-    if (toFavourite.nodeName.toLowerCase() == 'button') {
+    if (toFavourite.nodeName == 'BUTTON') {
         if (toFavourite.className == "unfavourited") {
             localStorage.setItem(toFavourite.name, toFavourite.value);
             toFavourite.className = "favourited";
@@ -29,9 +29,9 @@ document.getElementById("results").addEventListener('click', function (e) {
 });
 document.getElementById("items").addEventListener('click', function (e) {
     let pressed = e.target;
-    if (pressed.nodeName.toUpperCase() == 'I')
+    if (pressed.nodeName == 'I')
         pressed = pressed.parentNode;
-    if (pressed.nodeName.toUpperCase() == 'BUTTON') {
+    if (pressed.nodeName == 'BUTTON') {
         unfavourite(pressed);
     }
 })
